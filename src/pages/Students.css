@@ -1,0 +1,124 @@
+.students-page {
+  padding: 32px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.students-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.students-header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #172b4d;
+}
+
+.students-header p {
+  margin-top: 8px;
+  color: #6b7a99;
+}
+
+.add-student-button {
+  background: #2864e8;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-student-button:hover {
+  background: #1f54c7;
+}
+
+.students-card {
+  background: white;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.students-toolbar {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 300px;
+  padding: 12px 15px;
+  border: 1px solid #d5dbea;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #2864e8;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-table th {
+  text-align: left;
+  padding: 15px;
+  color: #667085;
+  font-size: 13px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.students-table td {
+  padding: 17px 15px;
+  border-bottom: 1px solid #edf0f5;
+  color: #172b4d;
+  font-size: 14px;
+}
+
+.students-table tr:hover {
+  background: #f8faff;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #d9f7e8;
+  color: #087443;
+}
+
+.status.pending {
+  background: #fff0c7;
+  color: #9a6700;
+}
+
+.edit-button,
+.delete-button {
+  border: none;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 6px;
+  font-size: 12px;
+}
+
+.edit-button {
+  background: #e8efff;
+  color: #2864e8;
+}
+
+.delete-button {
+  background: #ffe5e5;
+  color: #d93025;
+}
