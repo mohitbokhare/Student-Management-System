@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./Classes.css";
 
-const API_URL = "http://127.0.0.1:8000/api/classes/";
+// Render Django backend API
+const API_URL =
+  "https://student-management-system-rvgr.onrender.com/api/classes/";
 
 function Classes() {
   const [classes, setClasses] = useState([]);
@@ -19,9 +21,10 @@ function Classes() {
     status: "Active",
   });
 
-  // ==============================
+  // =========================================================
   // GET ALL CLASSES
-  // ==============================
+  // =========================================================
+
   const fetchClasses = async () => {
     try {
       setLoading(true);
@@ -29,7 +32,9 @@ function Classes() {
       const response = await fetch(API_URL);
 
       if (!response.ok) {
-        throw new Error("Failed to fetch classes");
+        throw new Error(
+          `Failed to fetch classes. Server returned ${response.status}`
+        );
       }
 
       const data = await response.json();
@@ -48,7 +53,12 @@ function Classes() {
       setClasses(formattedData);
     } catch (error) {
       console.error("Error fetching classes:", error);
-      alert("Unable to load classes from server.");
+
+      alert(
+        "Unable to load classes from server.\n\n" +
+          error.message +
+          "\n\nPlease check your Render backend."
+      );
     } finally {
       setLoading(false);
     }
@@ -59,24 +69,26 @@ function Classes() {
     fetchClasses();
   }, []);
 
-  // ==============================
+  // =========================================================
   // SEARCH
-  // ==============================
+  // =========================================================
+
   const filteredClasses = classes.filter((item) => {
     const search = searchTerm.toLowerCase();
 
     return (
-      item.id.toLowerCase().includes(search) ||
-      item.name.toLowerCase().includes(search) ||
-      item.course.toLowerCase().includes(search) ||
-      item.teacher.toLowerCase().includes(search) ||
-      item.room.toLowerCase().includes(search)
+      item.id?.toLowerCase().includes(search) ||
+      item.name?.toLowerCase().includes(search) ||
+      item.course?.toLowerCase().includes(search) ||
+      item.teacher?.toLowerCase().includes(search) ||
+      item.room?.toLowerCase().includes(search)
     );
   });
 
-  // ==============================
+  // =========================================================
   // INPUT CHANGE
-  // ==============================
+  // =========================================================
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -86,9 +98,10 @@ function Classes() {
     });
   };
 
-  // ==============================
+  // =========================================================
   // ADD CLASS BUTTON
-  // ==============================
+  // =========================================================
+
   const handleAddClick = () => {
     setEditingId(null);
 
@@ -104,9 +117,10 @@ function Classes() {
     setShowForm(true);
   };
 
-  // ==============================
+  // =========================================================
   // CREATE CLASS ID
-  // ==============================
+  // =========================================================
+
   const generateClassId = () => {
     if (classes.length === 0) {
       return "CLS-101";
@@ -114,7 +128,7 @@ function Classes() {
 
     const numbers = classes
       .map((item) => {
-        const match = item.id.match(/CLS-(\d+)/);
+        const match = item.id?.match(/CLS-(\d+)/);
         return match ? Number(match[1]) : 100;
       })
       .filter((number) => !isNaN(number));
@@ -124,9 +138,10 @@ function Classes() {
     return `CLS-${highestNumber + 1}`;
   };
 
-  // ==============================
+  // =========================================================
   // ADD / UPDATE CLASS
-  // ==============================
+  // =========================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -142,9 +157,10 @@ function Classes() {
     }
 
     try {
-      // ==========================
-      // UPDATE
-      // ==========================
+      // =====================================================
+      // UPDATE CLASS
+      // =====================================================
+
       if (editingId) {
         const existingClass = classes.find(
           (item) => item.id === editingId
@@ -176,8 +192,12 @@ function Classes() {
 
         if (!response.ok) {
           const errorData = await response.text();
+
           console.error("UPDATE ERROR:", errorData);
-          throw new Error(`Failed to update class: ${response.status}`);
+
+          throw new Error(
+            `Failed to update class: ${response.status}`
+          );
         }
 
         await fetchClasses();
@@ -185,9 +205,10 @@ function Classes() {
         alert("Class updated successfully.");
       }
 
-      // ==========================
-      // CREATE
-      // ==========================
+      // =====================================================
+      // CREATE CLASS
+      // =====================================================
+
       else {
         const newClassId = generateClassId();
 
@@ -236,13 +257,15 @@ function Classes() {
       setShowForm(false);
     } catch (error) {
       console.error("Error:", error);
+
       alert(error.message);
     }
   };
 
-  // ==============================
-  // EDIT
-  // ==============================
+  // =========================================================
+  // EDIT CLASS
+  // =========================================================
+
   const handleEdit = (item) => {
     setEditingId(item.id);
 
@@ -258,9 +281,10 @@ function Classes() {
     setShowForm(true);
   };
 
-  // ==============================
-  // DELETE
-  // ==============================
+  // =========================================================
+  // DELETE CLASS
+  // =========================================================
+
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this class?"
@@ -308,15 +332,16 @@ function Classes() {
 
       alert(
         "Unable to delete class.\n\n" +
-        error.message +
-        "\n\nCheck the browser console for details."
+          error.message +
+          "\n\nCheck the browser console for details."
       );
     }
   };
 
-  // ==============================
+  // =========================================================
   // CANCEL
-  // ==============================
+  // =========================================================
+
   const handleCancel = () => {
     setShowForm(false);
     setEditingId(null);
@@ -331,9 +356,10 @@ function Classes() {
     });
   };
 
-  // ==============================
+  // =========================================================
   // UI
-  // ==============================
+  // =========================================================
+
   return (
     <div className="classes-page">
 
@@ -472,7 +498,9 @@ function Classes() {
             placeholder="Search classes..."
             className="search-class-input"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) =>
+              setSearchTerm(e.target.value)
+            }
           />
 
         </div>
@@ -536,14 +564,18 @@ function Classes() {
 
                       <button
                         className="class-edit-button"
-                        onClick={() => handleEdit(item)}
+                        onClick={() =>
+                          handleEdit(item)
+                        }
                       >
                         Edit
                       </button>
 
                       <button
                         className="class-delete-button"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() =>
+                          handleDelete(item.id)
+                        }
                       >
                         Delete
                       </button>
@@ -559,7 +591,9 @@ function Classes() {
                 <tr>
                   <td
                     colSpan="8"
-                    style={{ textAlign: "center" }}
+                    style={{
+                      textAlign: "center",
+                    }}
                   >
                     No classes found.
                   </td>
