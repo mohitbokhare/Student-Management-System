@@ -2,18 +2,30 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
-const STUDENTS_API = "http://127.0.0.1:8000/api/students/";
-const CLASSES_API = "http://127.0.0.1:8000/api/classes/";
+const STUDENTS_API =
+  "https://student-management-system-rvgr.onrender.com/api/students/";
+
+const CLASSES_API =
+  "https://student-management-system-rvgr.onrender.com/api/classes/";
+
+const ATTENDANCE_API =
+  "https://student-management-system-rvgr.onrender.com/api/attendance/";
 
 function Dashboard() {
   const [students, setStudents] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [attendance, setAttendance] = useState([]);
 
   // Fetch dashboard data
   useEffect(() => {
     fetchStudents();
     fetchClasses();
+    fetchAttendance();
   }, []);
+
+  // ================================
+  // FETCH STUDENTS
+  // ================================
 
   const fetchStudents = async () => {
     try {
@@ -24,11 +36,18 @@ function Dashboard() {
       }
 
       const data = await response.json();
+
       setStudents(data);
+
+      console.log("Students:", data);
     } catch (error) {
       console.error("Error fetching students:", error);
     }
   };
+
+  // ================================
+  // FETCH CLASSES
+  // ================================
 
   const fetchClasses = async () => {
     try {
@@ -39,33 +58,98 @@ function Dashboard() {
       }
 
       const data = await response.json();
+
       setClasses(data);
+
+      console.log("Classes:", data);
     } catch (error) {
       console.error("Error fetching classes:", error);
     }
   };
 
-  // Count active classes
+  // ================================
+  // FETCH ATTENDANCE
+  // ================================
+
+  const fetchAttendance = async () => {
+    try {
+      const response = await fetch(ATTENDANCE_API);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch attendance");
+      }
+
+      const data = await response.json();
+
+      setAttendance(data);
+
+      console.log("Attendance:", data);
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+    }
+  };
+
+  // ================================
+  // ACTIVE CLASSES
+  // ================================
+
   const activeClasses = classes.filter(
     (item) => item.status === "Active"
   ).length;
 
-  // Show latest 4 students
-  const recentStudents = students.slice(-4).reverse();
+  // ================================
+  // ATTENDANCE PERCENTAGE
+  // ================================
+
+  const totalAttendance = attendance.length;
+
+  const presentAttendance = attendance.filter(
+    (item) => item.status === "Present"
+  ).length;
+
+  const attendancePercentage =
+    totalAttendance > 0
+      ? Math.round(
+          (presentAttendance / totalAttendance) * 100
+        )
+      : 0;
+
+  // ================================
+  // RECENT STUDENTS
+  // ================================
+
+  const recentStudents = students
+    .slice(-4)
+    .reverse();
+
+  // ================================
+  // PAGE
+  // ================================
 
   return (
     <div className="dashboard-page">
 
-      {/* Sidebar */}
+      {/* ================================
+          SIDEBAR
+      ================================= */}
+
       <aside className="sidebar">
 
         <div className="brand">
-          <div className="brand-logo">SM</div>
-          <span>StudentHub</span>
+
+          <div className="brand-logo">
+            SM
+          </div>
+
+          <span>
+            StudentHub
+          </span>
+
         </div>
 
         <nav className="sidebar-nav">
 
+          {/* Dashboard */}
           <Link
             to="/dashboard"
             className="nav-item active"
@@ -73,6 +157,7 @@ function Dashboard() {
             Dashboard
           </Link>
 
+          {/* Students */}
           <Link
             to="/students"
             className="nav-item"
@@ -80,6 +165,7 @@ function Dashboard() {
             Students
           </Link>
 
+          {/* Classes */}
           <Link
             to="/classes"
             className="nav-item"
@@ -87,39 +173,59 @@ function Dashboard() {
             Classes
           </Link>
 
-          <a className="nav-item">
+          {/* Attendance */}
+          <Link
+            to="/attendance"
+            className="nav-item"
+          >
             Attendance
-          </a>
+          </Link>
 
-          <a className="nav-item">
+          {/* Fees */}
+          <Link
+            to="/fees"
+            className="nav-item"
+          >
             Fees
-          </a>
+          </Link>
 
         </nav>
 
         <div className="sidebar-info">
-          <strong>Student Management System</strong>
+
+          <strong>
+            Student Management System
+          </strong>
 
           <p>
-            Manage student records, attendance, classes and fees.
+            Manage student records, attendance,
+            classes and fees.
           </p>
+
         </div>
 
       </aside>
 
+      {/* ================================
+          MAIN CONTENT
+      ================================= */}
 
-      {/* Main Content */}
       <main className="dashboard-main">
 
         {/* Header */}
+
         <header className="dashboard-header">
 
           <div>
-            <h1>Dashboard</h1>
+
+            <h1>
+              Dashboard
+            </h1>
 
             <p>
               Welcome back. Here's today's overview.
             </p>
+
           </div>
 
           <div className="user-profile">
@@ -136,11 +242,14 @@ function Dashboard() {
 
         </header>
 
+        {/* ================================
+            STATISTICS
+        ================================= */}
 
-        {/* Statistics */}
         <section className="stats-grid">
 
           {/* Total Students */}
+
           <div className="stat-card blue">
 
             <span>
@@ -153,8 +262,8 @@ function Dashboard() {
 
           </div>
 
-
           {/* Active Classes */}
+
           <div className="stat-card green">
 
             <span>
@@ -167,8 +276,8 @@ function Dashboard() {
 
           </div>
 
+          {/* Today's Attendance */}
 
-          {/* Attendance */}
           <div className="stat-card orange">
 
             <span>
@@ -176,13 +285,13 @@ function Dashboard() {
             </span>
 
             <strong>
-              92%
+              {attendancePercentage}%
             </strong>
 
           </div>
 
+          {/* Pending Fees */}
 
-          {/* Fees */}
           <div className="stat-card purple">
 
             <span>
@@ -197,8 +306,10 @@ function Dashboard() {
 
         </section>
 
+        {/* ================================
+            RECENT STUDENTS
+        ================================= */}
 
-        {/* Recent Students */}
         <section className="students-section">
 
           <div className="section-header">
@@ -215,7 +326,6 @@ function Dashboard() {
             </Link>
 
           </div>
-
 
           <div className="table-container">
 
@@ -245,14 +355,15 @@ function Dashboard() {
 
               </thead>
 
-
               <tbody>
 
                 {recentStudents.length > 0 ? (
 
                   recentStudents.map((student) => (
 
-                    <tr key={student.student_id}>
+                    <tr
+                      key={student.student_id}
+                    >
 
                       <td>
                         {student.name}
@@ -290,7 +401,9 @@ function Dashboard() {
 
                     <td
                       colSpan="4"
-                      style={{ textAlign: "center" }}
+                      style={{
+                        textAlign: "center"
+                      }}
                     >
                       No students found.
                     </td>

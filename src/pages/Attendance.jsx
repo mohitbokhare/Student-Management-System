@@ -9,9 +9,13 @@ function Attendance() {
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("Present");
 
-  const API_URL = "http://127.0.0.1:8000/api";
+  // Render Backend API
+  const API_URL =
+    "https://student-management-system-rvgr.onrender.com/api";
 
-  // Load students
+  // ============================
+  // LOAD STUDENTS
+  // ============================
   useEffect(() => {
     fetch(`${API_URL}/students/`)
       .then((response) => {
@@ -30,7 +34,9 @@ function Attendance() {
       });
   }, []);
 
-  // Load attendance records
+  // ============================
+  // LOAD ATTENDANCE
+  // ============================
   const loadAttendance = () => {
     fetch(`${API_URL}/attendance/`)
       .then((response) => {
@@ -53,7 +59,9 @@ function Attendance() {
     loadAttendance();
   }, []);
 
-  // Save attendance
+  // ============================
+  // SAVE ATTENDANCE
+  // ============================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -65,9 +73,11 @@ function Attendance() {
     try {
       const response = await fetch(`${API_URL}/attendance/`, {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify({
           student: student,
           date: date,
@@ -86,10 +96,12 @@ function Attendance() {
 
       alert("Attendance saved successfully.");
 
+      // Clear form
       setStudent("");
       setDate("");
       setStatus("Present");
 
+      // Reload attendance records
       loadAttendance();
     } catch (error) {
       console.error("Attendance error:", error);
@@ -98,18 +110,28 @@ function Attendance() {
     }
   };
 
+  // ============================
+  // PAGE
+  // ============================
   return (
     <div className="attendance-page">
 
-      {/* Header */}
+      {/* ============================
+          HEADER
+      ============================ */}
       <div className="attendance-header">
         <div>
           <h1>Attendance</h1>
-          <p>Manage student attendance records.</p>
+
+          <p>
+            Manage student attendance records.
+          </p>
         </div>
       </div>
 
-      {/* Mark Attendance */}
+      {/* ============================
+          MARK ATTENDANCE
+      ============================ */}
       <div className="attendance-card">
 
         <h2>Mark Attendance</h2>
@@ -119,10 +141,12 @@ function Attendance() {
           className="attendance-form"
         >
 
-          {/* Student */}
+          {/* STUDENT */}
           <div className="form-group">
 
-            <label>Student</label>
+            <label>
+              Student
+            </label>
 
             <select
               value={student}
@@ -145,12 +169,20 @@ function Attendance() {
 
             </select>
 
+            {students.length === 0 && (
+              <small>
+                No students found. Add students first.
+              </small>
+            )}
+
           </div>
 
-          {/* Date */}
+          {/* DATE */}
           <div className="form-group">
 
-            <label>Date</label>
+            <label>
+              Date
+            </label>
 
             <input
               type="date"
@@ -161,10 +193,12 @@ function Attendance() {
 
           </div>
 
-          {/* Status */}
+          {/* STATUS */}
           <div className="form-group">
 
-            <label>Status</label>
+            <label>
+              Status
+            </label>
 
             <select
               value={status}
@@ -184,10 +218,11 @@ function Attendance() {
 
           </div>
 
-          {/* Save Button */}
+          {/* SAVE BUTTON */}
           <button
             type="submit"
             className="attendance-button"
+            disabled={students.length === 0}
           >
             Save Attendance
           </button>
@@ -196,10 +231,30 @@ function Attendance() {
 
       </div>
 
-      {/* Attendance Records */}
+      {/* ============================
+          ATTENDANCE RECORDS
+      ============================ */}
       <div className="attendance-card">
 
-        <h2>Attendance Records</h2>
+        <div className="attendance-records-header">
+
+          <div>
+            <h2>Attendance Records</h2>
+
+            <p>
+              View all recorded student attendance.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="refresh-button"
+            onClick={loadAttendance}
+          >
+            Refresh
+          </button>
+
+        </div>
 
         <div className="table-container">
 
@@ -242,11 +297,9 @@ function Attendance() {
                     <tr key={record.id}>
 
                       <td>
-
                         {studentData
                           ? `${studentData.student_id} - ${studentData.name}`
                           : record.student}
-
                       </td>
 
                       <td>
