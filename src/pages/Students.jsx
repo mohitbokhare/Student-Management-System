@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Students.css";
 
-const API_URL = "http://127.0.0.1:8000/api/students/";
+const API_URL = "https://student-management-system-rvgr.onrender.com/api/students/";
 
 function Students() {
   const [students, setStudents] = useState([]);
