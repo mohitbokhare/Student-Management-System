@@ -17,15 +17,17 @@ function Dashboard() {
   const [classes, setClasses] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
-  // Get logged-in user's name from email
+  // Dynamic user profile
   const userEmail = localStorage.getItem("userEmail") || "";
+
   const userName = userEmail
     ? userEmail
         .split("@")[0]
         .split(/[._-]/)
         .filter(Boolean)
         .map((word) =>
-          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          word.charAt(0).toUpperCase() +
+          word.slice(1).toLowerCase()
         )
         .join(" ")
     : "User";
@@ -74,10 +76,12 @@ function Dashboard() {
     }
   };
 
+  // Active Classes
   const activeClasses = classes.filter(
     (item) => item.status === "Active"
   ).length;
 
+  // Attendance Percentage
   const totalAttendance = attendance.length;
 
   const presentAttendance = attendance.filter(
@@ -89,6 +93,7 @@ function Dashboard() {
       ? Math.round((presentAttendance / totalAttendance) * 100)
       : 0;
 
+  // Recent Students
   const recentStudents = students.slice(-4).reverse();
 
   return (
@@ -102,6 +107,7 @@ function Dashboard() {
             <p>Welcome back. Here's today's overview.</p>
           </div>
 
+          {/* Dynamic User Profile */}
           <div className="user-profile">
             <div className="user-avatar">{userInitial}</div>
             <span>{userName}</span>
@@ -110,6 +116,7 @@ function Dashboard() {
 
         {/* Statistics */}
         <section className="stats-grid">
+
           <div className="stat-card blue">
             <span>Total Students</span>
             <strong>{students.length}</strong>
@@ -124,10 +131,12 @@ function Dashboard() {
             <span>Today's Attendance</span>
             <strong>{attendancePercentage}%</strong>
           </div>
+
         </section>
 
         {/* Recent Student Records */}
         <section className="students-section">
+
           <div className="section-header">
             <h2>Recent Student Records</h2>
 
@@ -177,6 +186,7 @@ function Dashboard() {
               </tbody>
             </table>
           </div>
+
         </section>
 
       </main>
