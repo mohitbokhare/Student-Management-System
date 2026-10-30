@@ -164,7 +164,7 @@
    RECORDS HEADER
    ===================================================== */
 
-.records-header {
+.attendance-records-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -172,11 +172,11 @@
   margin-bottom: 22px;
 }
 
-.records-header h2 {
+.attendance-records-header h2 {
   margin-bottom: 6px;
 }
 
-.records-header p {
+.attendance-records-header p {
   margin: 0;
   color: #718096;
   font-size: 14px;

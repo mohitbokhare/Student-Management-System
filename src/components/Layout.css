@@ -1,0 +1,93 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  min-height: 100vh;
+  background: #19345d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 16px;
+  box-sizing: border-box;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding: 0 10px;
+}
+
+.brand h2 {
+  font-size: 20px;
+  margin: 0;
+  color: white;
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  background: #2864e8;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  display: block;
+  padding: 13px 15px;
+  color: #dce6f5;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: #2864e8;
+  color: white;
+}
+
+.sidebar-info {
+  margin-top: auto;
+  padding: 15px 10px;
+  color: #bdcce2;
+  font-size: 12px;
+}
+
+.layout-main {
+  flex: 1;
+  min-width: 0;
+  background: #f5f7fb;
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    width: 180px;
+    min-width: 180px;
+    padding: 20px 10px;
+  }
+
+  .brand h2 {
+    font-size: 16px;
+  }
+
+  .layout-main {
+    overflow-x: auto;
+  }
+}
