@@ -1,13 +1,17 @@
+
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Temporary frontend login
+    localStorage.setItem("userEmail", email);
     navigate("/dashboard");
   };
 
@@ -17,7 +21,9 @@ function Login() {
         <div className="login-logo">SM</div>
 
         <h1>StudentHub</h1>
-        <p className="login-subtitle">Student Management System</p>
+        <p className="login-subtitle">
+          Student Management System
+        </p>
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
@@ -25,6 +31,8 @@ function Login() {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -34,6 +42,8 @@ function Login() {
             <input
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
