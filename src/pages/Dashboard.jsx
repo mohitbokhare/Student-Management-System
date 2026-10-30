@@ -17,6 +17,23 @@ function Dashboard() {
   const [classes, setClasses] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
+  // Dynamic user profile
+  const userEmail = localStorage.getItem("userEmail") || "";
+
+  const userName = userEmail
+    ? userEmail
+        .split("@")[0]
+        .split(/[._-]/)
+        .filter(Boolean)
+        .map((word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1).toLowerCase()
+        )
+        .join(" ")
+    : "User";
+
+  const userInitial = userName.charAt(0).toUpperCase();
+
   useEffect(() => {
     fetchStudents();
     fetchClasses();
@@ -90,9 +107,10 @@ function Dashboard() {
             <p>Welcome back. Here's today's overview.</p>
           </div>
 
+          {/* Dynamic User Profile */}
           <div className="user-profile">
-            <div className="user-avatar">M</div>
-            <span>Mohit</span>
+            <div className="user-avatar">{userInitial}</div>
+            <span>{userName}</span>
           </div>
         </header>
 
